@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#27445d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="QC">
+<title>پیش‌بینی کیفیت و تناژ تولید</title>
+<style>
+:root{--bg:#e4e9ee;--card:#f6f8fa;--ink:#1d2a35;--mute:#5d6b78;--line:#c3ccd5;--ok:#1b7a6b;--bad:#b4432a;--acc:#27445d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141c23;--card:#1d2833;--ink:#e6ecf1;--mute:#93a1ae;--line:#33424f;--ok:#46c2ae;--bad:#f07a5e;--acc:#8fb4d3}}
+:root[data-theme="dark"]{--bg:#141c23;--card:#1d2833;--ink:#e6ecf1;--mute:#93a1ae;--line:#33424f;--ok:#46c2ae;--bad:#f07a5e;--acc:#8fb4d3}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,"Segoe UI",sans-serif;line-height:1.7}
+main{max-width:520px;margin:0 auto;padding:16px 14px 40px}
+h1{font-size:20px;font-weight:800;margin:6px 0 14px}
+h2{font-size:15px;font-weight:700;margin:20px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.ro{direction:ltr;text-align:center;font-size:20px;font-weight:600;padding:6px;border:1px dashed var(--line);border-radius:10px;min-height:44px}
+#A0v{color:var(--ok)}#N0v{color:var(--bad)}
+.sgi{padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}.sgi:last-child{border:0}.sgi b{display:block;font-size:13px;color:var(--mute);font-weight:600}.sgi.bd{color:var(--bad)}.sgi em{font-style:normal;color:var(--bad);font-size:12px}
+.ap{font:inherit;font-size:12px;margin-inline-start:8px;padding:2px 10px;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:8px;cursor:pointer}
+label{display:block;font-size:13px;color:var(--mute);margin-bottom:2px}
+input[type=text]{width:100%;direction:ltr;text-align:center;font:inherit;font-size:20px;font-weight:600;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:6px}
+.sc{display:flex;align-items:center;gap:8px;margin-top:8px}
+.sc:first-child{margin-top:0}
+.sc .nm{flex:0 0 78px;font-size:14px;font-weight:600}
+.sc input{flex:1;min-width:0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex:none}
+.seg button{border:0;background:transparent;color:var(--ink);font:inherit;font-size:13px;padding:6px 10px;cursor:pointer}
+.seg button.on.up{background:var(--ok);color:#fff}
+.seg button.on.dn{background:var(--bad);color:#fff}
+select{font:inherit;font-size:13px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:5px 8px;max-width:100%;margin-top:10px}
+.hero .big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.hero b{font-size:44px;font-weight:800;line-height:1.1;direction:ltr}
+.hero .dl{font-size:15px;font-weight:700;direction:ltr}
+.up{color:var(--ok)}.dn{color:var(--bad)}
+.bar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:10px 0 0;background:var(--line);direction:ltr}
+.bar i{display:block;transition:width .25s}.bar .a{background:var(--ok)}.bar .n{background:var(--bad)}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+th,td{padding:7px 4px;text-align:center;border-bottom:1px solid var(--line)}
+th{font-weight:600;color:var(--mute);font-size:12px}
+td:first-child,th:first-child{text-align:right}
+td{direction:ltr}td:first-child{direction:rtl}
+tr:last-child td{border-bottom:0}
+.note{color:var(--mute);font-size:12px;margin-top:12px}
+input:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+<h1>پیش‌بینی کیفیت و تناژ تولید</h1>
+
+<h2>وضعیت فعلی</h2>
+<div class="card grid">
+  <div><label for="T0">تناژ تولید (تن)</label><input type="text" id="T0" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+  <div><label for="Q0">درصد کیفیت (٪)</label><input type="text" id="Q0" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+  <div><label for="S0">قراضه (تن)</label><input type="text" id="S0" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+  <div><label for="V0">کلاف فروش (تن)</label><input type="text" id="V0" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+  <div><label>قابل قبول (تن)</label><div class="ro" id="A0v"></div></div>
+  <div><label>غیرقابل قبول (تن)</label><div class="ro" id="N0v"></div></div>
+</div>
+
+<h2>اگر این مقدار تغییر کند</h2>
+<div class="card">
+  <div class="sc" data-k="T"><span class="nm">تناژ کل</span><span class="seg"><button class="up on" data-d="1">افزایش</button><button class="dn" data-d="-1">کاهش</button></span><input type="text" inputmode="decimal" autocomplete="off" placeholder="تن"></div>
+  <div class="sc" data-k="A"><span class="nm">قابل قبول</span><span class="seg"><button class="up on" data-d="1">افزایش</button><button class="dn" data-d="-1">کاهش</button></span><input type="text" inputmode="decimal" autocomplete="off" placeholder="تن"></div>
+  <div class="sc" data-k="N"><span class="nm">غیرقابل قبول</span><span class="seg"><button class="up on" data-d="1">افزایش</button><button class="dn" data-d="-1">کاهش</button></span><input type="text" inputmode="decimal" autocomplete="off" placeholder="تن"></div>
+  <div class="sc" data-k="V"><span class="nm">کلاف فروش غیرقابل قبول</span><span class="seg"><button class="up on" data-d="1">افزایش</button><button class="dn" data-d="-1">کاهش</button></span><input type="text" inputmode="decimal" autocomplete="off" placeholder="تن"></div>
+  <div class="sc" data-k="S"><span class="nm">قراضه</span><span class="seg"><button class="up on" data-d="1">افزایش</button><button class="dn" data-d="-1">کاهش</button></span><input type="text" inputmode="decimal" autocomplete="off" placeholder="تن"></div>
+</div>
+
+<h2>نتیجه</h2>
+<div class="card hero">
+  <div class="big"><b id="qBig">-</b><span class="dl" id="qD"></span></div>
+  <div class="bar"><i class="a" id="bA"></i><i class="n" id="bN"></i></div>
+  <table>
+    <thead><tr><th></th><th>فعلی</th><th>پیش‌بینی</th><th>تغییر</th></tr></thead>
+    <tbody id="tb"></tbody>
+  </table>
+</div>
+<h2>پیشنهاد برای رسیدن به درصد هدف</h2>
+<div class="card">
+  <label for="QT">درصد کیفیت هدف (٪)</label>
+  <input type="text" id="QT" inputmode="decimal" autocomplete="off" placeholder="مثلاً ۹۷">
+  <div id="sg" style="margin-top:8px"></div>
+</div>
+<p class="note"><b>راهنما</b><br>• تناژ کل: مقدار اضافه یا کم‌شده به «قابل قبول» اضافه یا از آن کم می‌شود.<br>• قابل قبول و غیرقابل قبول: هر مقدار که به یکی اضافه شود از دیگری کم می‌شود و تناژ کل ثابت می‌ماند.<br>• قراضه: هر مقدار قراضه از «غیرقابل قبول» و از «تناژ کل» کم می‌شود.<br>• کلاف فروش غیرقابل قبول: اگر مقدار آن تغییر کند، افزایش آن تناژ کل و قابل قبول را کم و کاهش آن هر دو را زیاد می‌کند؛ غیرقابل قبول تغییر نمی‌کند. مقداری که در «وضعیت فعلی» وارد می‌شود به قابل قبول و تناژ کل اضافه می‌شود.<br>• درصد کیفیت = قابل قبول ÷ (قابل قبول + غیرقابل قبول) × ۱۰۰<br>• می‌توانید چند مورد را هم‌زمان پر کنید.</p>
+</main>
+
+<script>
+(function(){
+var dir={T:1,A:1,N:1,S:1,V:1},ap=[];
+function num(s){
+  s=String(s).replace(/[۰-۹]/g,function(c){return c.charCodeAt(0)-1776})
+             .replace(/[٠-٩]/g,function(c){return c.charCodeAt(0)-1632})
+             .replace(/[\u066c\u00a0 ]/g,'').replace(/\u2212/g,'-').replace(/[^0-9.,\/\u066b\-]/g,'');
+  if(/^-?\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s=s.replace(/,/g,'');
+  s=s.replace(/[\u066b,\/]/g,'.');
+  var v=parseFloat(s);return isFinite(v)?v:0;
+}
+function r2(n){return Math.round(n*1000)/1000}
+function sg(n){n=r2(n);return n===0?'0':(n>0?'+':'−')+Math.abs(n)}
+function $(id){return document.getElementById(id)}
+
+function sug(T0,S0,A0,N0){
+  var box=$('sg'),raw=$('QT').value.trim();
+  if(!raw){box.innerHTML='';return}
+  var q=num(raw)/100;
+  if(q<=0||q>1){box.innerHTML='<div class="sgi bd">درصد هدف باید بین ۰ و ۱۰۰ باشد.</div>';return}
+  var D=A0+N0,x=q*D-A0,e=1e-9,out=[];
+  if(Math.abs(x)<0.005){box.innerHTML='<div class="sgi">درصد کیفیت فعلی همین مقدار است.</div>';return}
+  var s=D-A0/q;
+  out.push(['جابه\u200cجایی بین قابل قبول و غیرقابل قبول (تناژ کل ثابت)',x>0?'به قابل قبول '+r2(x)+' تن اضافه شود (از غیرقابل قبول کم شود)':'از قابل قبول '+r2(-x)+' تن کم شود (به غیرقابل قبول اضافه شود)',x>0?x<=N0+e:-x<=A0+e]);
+  out.push(['تغییر قراضه (با تغییر غیرقابل قبول و تناژ کل هم‌زمان)',s>=0?'قراضه '+r2(s)+' تن افزایش یابد (از غیرقابل قبول کم شود)':'قراضه '+r2(-s)+' تن کاهش یابد (به غیرقابل قبول برگردد)',s>=0?s<=N0+e:-s<=S0+e]);
+  if(q<1){var t=x/(1-q);out.push(['تغییر تناژ کل (به قابل قبول اضافه یا از آن کم شود)',t>=0?'تناژ کل '+r2(t)+' تن افزایش یابد':'تناژ کل '+r2(-t)+' تن کاهش یابد',t>=0?true:-t<=A0+e]);}
+  ap=[['A',x],['S',s]];if(q<1)ap.push(['T',t]);
+  box.innerHTML=out.map(function(o,i){return '<div class="sgi"><b>'+o[0]+'</b>'+o[1]+(o[2]?' <button class="ap" data-i="'+i+'">اعمال</button>':'')+(o[2]?'':' <em>(بیش از مقدار موجود؛ شدنی نیست)</em>')+'</div>'}).join('');
+}
+function calc(){
+  var T0=Math.max(0,num($('T0').value));
+  var Q0=Math.min(100,Math.max(0,num($('Q0').value)));
+  var S0=Math.min(T0,Math.max(0,num($('S0').value)));var V0=Math.max(0,num($('V0').value));var A0q=(T0-S0)*Q0/100;var A0=A0q+V0;var N0=T0-S0-A0q;var Qb=(A0+N0)>0?A0/(A0+N0)*100:0;$('A0v').textContent=r2(A0);$('N0v').textContent=r2(N0);
+  var d={};
+  document.querySelectorAll('.sc').forEach(function(r){
+    d[r.dataset.k]=dir[r.dataset.k]*Math.abs(num(r.querySelector('input').value));
+  });
+  var mode='q';
+  var dv=d.V;var A1=Math.max(0,A0+d.T-dv), N1=N0, S1=S0, T1;
+  var t=d.A-d.N;t=t>0?Math.min(t,N1):-Math.min(-t,A1);
+  A1+=t;N1-=t;
+  var mv=d.S>0?Math.min(d.S,N1):-Math.min(-d.S,S1);
+  S1=S0+mv;N1-=mv;
+  var V1=Math.max(0,V0+dv);
+  T1=A1+N1+S0;
+  var Q1=(A1+N1)>0?A1/(A1+N1)*100:0;
+
+  var qd=Q1-Qb;
+  $('qBig').textContent=r2(Q1)+'٪';
+  $('qBig').className=qd>0.005?'up':qd<-0.005?'dn':'';
+  $('qD').textContent=sg(qd)+' واحد';
+  $('qD').className='dl '+(qd>0.005?'up':qd<-0.005?'dn':'');
+  $('bA').style.width=Q1+'%';$('bN').style.width=(T1>0?100-Q1:0)+'%';
+
+  var rows=[['تناژ کل',T0+V0,T1,0],['قابل قبول',A0,A1,1],['غیرقابل قبول',N0,N1,-1],['قراضه',S0,S1,0],['کلاف فروش قلع‌اندود',V0,V1,0],['درصد کیفیت',Qb,Q1,1]];
+  $('tb').innerHTML=rows.map(function(r,i){
+    var df=r[2]-r[1], good=df*r[3];
+    var cls=Math.abs(df)<0.005||!r[3]?'':(good>0?'up':'dn');
+    var u=i===5?'٪':'';
+    return '<tr><td>'+r[0]+'</td><td>'+r2(r[1])+u+'</td><td>'+r2(r[2])+u+'</td><td class="'+cls+'">'+sg(df)+'</td></tr>';
+  }).join('');sug(T0,S0,A0,N0);
+}
+document.querySelectorAll('input[type=text]').forEach(function(i){i.addEventListener('input',calc)});
+$('sg').addEventListener('click',function(e){
+  var b=e.target.closest('.ap');if(!b)return;
+  var a=ap[+b.dataset.i];if(!a)return;
+  document.querySelectorAll('.sc').forEach(function(r){
+    var k=r.dataset.k,on=k===a[0];
+    r.querySelector('input').value=on?String(+Math.abs(a[1]).toPrecision(12)):'';
+    dir[k]=on&&a[1]<0?-1:1;
+    r.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',(+x.dataset.d)===dir[k])});
+  });
+  calc();
+});
+document.querySelectorAll('.sc .seg button').forEach(function(b){
+  b.addEventListener('click',function(){
+    var row=b.closest('.sc');dir[row.dataset.k]=+b.dataset.d;
+    row.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b)});
+    calc();
+  });
+});
+calc();
+})();
+</script>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+</script>
+</body>
+</html>

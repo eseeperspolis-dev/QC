@@ -1,0 +1,17 @@
+{
+  "name": "QC - کیفیت و تناژ تولید",
+  "short_name": "QC",
+  "description": "محاسبه‌گر کیفیت و تناژ تولید",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#27445d",
+  "theme_color": "#27445d",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
