@@ -53,11 +53,24 @@ td{direction:ltr}td:first-child{direction:rtl}
 tr:last-child td{border-bottom:0}
 .note{color:var(--mute);font-size:12px;margin-top:12px}
 input:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mseg button.on{background:var(--acc);color:var(--bg)}
+.tabs{display:flex;gap:6px;margin:0 0 12px}
+.tabs button{flex:1;font:inherit;font-weight:600;padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.tabs button.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.hr{display:grid;grid-template-columns:22px 1fr 1fr 1fr 32px;gap:6px;align-items:center;margin-top:6px}
+.hr input[type=text]{font-size:16px;padding:5px}
+.hh label{text-align:center;margin:0;font-size:12px}
+.hn{font-size:12px;color:var(--mute);text-align:center}
+.hr .x{font:inherit;font-size:18px;border:1px solid var(--line);background:var(--bg);color:var(--bad);border-radius:8px;cursor:pointer;height:34px}
+.addb{margin-top:10px;width:100%;font:inherit;padding:8px;border-radius:10px;border:1px dashed var(--acc);background:transparent;color:var(--acc);cursor:pointer}
 </style>
 </head>
 <body>
 <main>
 <h1>پیش‌بینی کیفیت و تناژ تولید</h1>
+<div class="tabs" id="tabs"><button data-t="t1" class="on">محاسبه</button><button data-t="t2">برنامه ماه</button></div>
+<div id="t1">
 
 <h2>وضعیت فعلی</h2>
 <div class="card grid">
@@ -94,6 +107,37 @@ input:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid 
   <div id="sg" style="margin-top:8px"></div>
 </div>
 <p class="note"><b>راهنما</b><br>• تناژ کل: مقدار اضافه یا کم‌شده به «قابل قبول» اضافه یا از آن کم می‌شود.<br>• قابل قبول و غیرقابل قبول: هر مقدار که به یکی اضافه شود از دیگری کم می‌شود و تناژ کل ثابت می‌ماند.<br>• قراضه: هر مقدار قراضه از «غیرقابل قبول» و از «تناژ کل» کم می‌شود.<br>• کلاف فروش غیرقابل قبول: اگر مقدار آن تغییر کند، افزایش آن تناژ کل و قابل قبول را کم و کاهش آن هر دو را زیاد می‌کند؛ غیرقابل قبول تغییر نمی‌کند. مقداری که در «وضعیت فعلی» وارد می‌شود به قابل قبول و تناژ کل اضافه می‌شود.<br>• درصد کیفیت = قابل قبول ÷ (قابل قبول + غیرقابل قبول) × ۱۰۰<br>• می‌توانید چند مورد را هم‌زمان پر کنید.</p>
+</div>
+<div id="t2" hidden>
+<h2>هدف ماه</h2>
+<div class="card">
+  <div class="grid2">
+    <div><label for="PT">هدف تناژ ماه (تن)</label><input type="text" id="PT" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+    <div><label for="PQ">هدف کیفیت ماه (٪)</label><input type="text" id="PQ" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+  </div>
+  <div style="margin:10px 0 0;font-size:13px;display:flex;align-items:center;gap:8px"><span>طول ماه:</span><span class="seg mseg" id="pseg"><button data-m="30" class="on">۳۰ روز</button><button data-m="31">۳۱ روز</button></span></div>
+</div>
+<h2>وضعیت تا امروز</h2>
+<div class="card">
+  <div class="grid2">
+    <div><label for="PD">تعداد روز گذشته</label><input type="text" id="PD" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+    <div><label for="PS">تناژ تولید تا امروز (تن)</label><input type="text" id="PS" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+  </div>
+  <div style="margin-top:8px"><label for="PC">کیفیت تا امروز (٪)</label><input type="text" id="PC" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+</div>
+<h2>برنامه ادامه ماه</h2>
+<div class="card" id="pl"></div>
+<h2>ماه&zwnj;های گذشته</h2>
+<div class="card">
+  <div style="font-size:12px;color:var(--mute);margin-bottom:6px">ماه&zwnj;ها را از قدیمی به جدید وارد کنید. تعداد روز تولید اختیاری است (پیش&zwnj;فرض ۳۰).</div>
+  <div class="hr hh"><span></span><label>تناژ (تن)</label><label>کیفیت (٪)</label><label>روز</label><span></span></div>
+  <div id="hrows"></div>
+  <button id="hadd" class="addb">+ افزودن ماه</button>
+</div>
+<h2>پیش&zwnj;بینی بر اساس ماه&zwnj;های گذشته</h2>
+<div class="card" id="hs"></div>
+<p class="note">کیفیت در این برگه = قابل قبول ÷ تناژ تولید. فرض شده تولید روزانه در بقیه ماه یکنواخت است.</p>
+</div>
 </main>
 
 <script>
@@ -124,6 +168,112 @@ function sug(T0,S0,A0,N0){
   if(q<1){var t=x/(1-q);out.push(['تغییر تناژ کل (به قابل قبول اضافه یا از آن کم شود)',t>=0?'تناژ کل '+r2(t)+' تن افزایش یابد':'تناژ کل '+r2(-t)+' تن کاهش یابد',t>=0?true:-t<=A0+e]);}
   ap=[['A',x],['S',s]];if(q<1)ap.push(['T',t]);
   box.innerHTML=out.map(function(o,i){return '<div class="sgi"><b>'+o[0]+'</b>'+o[1]+(o[2]?' <button class="ap" data-i="'+i+'">اعمال</button>':'')+(o[2]?'':' <em>(بیش از مقدار موجود؛ شدنی نیست)</em>')+'</div>'}).join('');
+}
+var pmd=30;
+function plan(){
+  var box=$('pl');
+  function msg(t,c){box.innerHTML='<div class="sgi'+(c?' '+c:'')+'">'+t+'</div>'}
+  var ids=['PT','PQ','PD','PS','PC'];
+  for(var i=0;i<ids.length;i++){if($(ids[i]).value.trim()===''){msg('هدف تناژ، هدف کیفیت، تعداد روز گذشته، تناژ و کیفیت تا امروز را وارد کنید.');return}}
+  var Tt=num($('PT').value),qt=num($('PQ').value)/100,d=num($('PD').value),Ts=num($('PS').value),qs=num($('PC').value)/100;
+  if(!(Tt>0)||!(d>0)||!(Ts>0)){msg('تناژها و تعداد روز باید بزرگ\u200cتر از صفر باشند.','bd');return}
+  if(qt<=0||qt>1||qs<0||qs>1){msg('درصد کیفیت باید بین ۰ و ۱۰۰ باشد.','bd');return}
+  if(d>pmd){msg('تعداد روز گذشته از طول ماه ('+pmd+' روز) بیشتر است.','bd');return}
+  var A0=Ts*qs,rem=pmd-d,RemT=Tt-Ts,cur=Ts/d,proj=cur*pmd;
+  var h='<div class="sgi"><b>وضعیت تا امروز</b>میانگین تولید روزانه: '+r2(cur)+' تن<br>پیش\u200cبینی تناژ پایان ماه با روند فعلی: '+r2(proj)+' تن ('+(proj>=Tt?'بیشتر از هدف: ':'کمتر از هدف: ')+r2(Math.abs(proj-Tt))+' تن)<br>کیفیت تا امروز: '+r2(qs*100)+'٪</div>';
+  if(rem<=0){
+    h+='<div class="sgi"><b>نتیجه ماه</b>تناژ: '+r2(Ts)+' تن ('+(Ts>=Tt?'به هدف رسیده\u200cاید':'کمبود '+r2(Tt-Ts)+' تن')+')<br>کیفیت: '+r2(qs*100)+'٪ ('+(qs>=qt-1e-9?'به هدف رسیده\u200cاید':'کمتر از هدف')+')</div>';
+  }else if(RemT<=0){
+    h+='<div class="sgi"><b>برنامه ادامه ماه</b>تناژ هدف ('+r2(Tt)+' تن) تا امروز تأمین شده است.<br>کیفیت فعلی '+r2(qs*100)+'٪ است'+(qs>=qt-1e-9?' و به هدف رسیده\u200cاید.':' و از هدف پایین\u200cتر است؛ برای جبران باید تولید بیشتر با کیفیت بالا داشته باشید.')+'</div>';
+  }else{
+    var dailyT=RemT/rem,need=(qt*Tt-A0)/RemT,diff=(dailyT/cur-1)*100;
+    h+='<div class="sgi"><b>برنامه تناژ</b>تناژ لازم در '+r2(rem)+' روز باقی\u200cمانده: <strong>'+r2(RemT)+' تن</strong><br>میانگین روزانه لازم: <strong>'+r2(dailyT)+' تن</strong> ('+(Math.abs(diff)<0.005?'برابر میانگین تا امروز':r2(Math.abs(diff))+'٪ '+(diff>0?'بیشتر':'کمتر')+' از میانگین تا امروز')+')</div>';
+    h+='<div class="sgi"><b>برنامه کیفیت</b>';
+    var g=(qs-qt)*100;
+    if(need>1+1e-9){
+      h+='<em>شدنی نیست:</em> حتی با ۱۰۰٪ کیفیت در بقیه ماه حداکثر به '+r2((A0+RemT)/Tt*100)+'٪ می\u200cرسید.';
+    }else if(need<=0){
+      h+='هدف کیفیت عملاً تأمین شده است؛ حتی با کیفیت پایین در بقیه ماه، کیفیت کل ماه کمتر از هدف نمی\u200cشود.';
+    }else{
+      var dailyA=dailyT*need;
+      h+='کیفیت لازم در بقیه ماه: <strong>'+r2(need*100)+'٪</strong><br>'+
+        (g<-0.005?'چون تا امروز کیفیت از هدف پایین\u200cتر بوده، باید در بقیه ماه از هدف بالاتر تولید کنید.':g>0.005?'چون تا امروز کیفیت از هدف بالاتر بوده، می\u200cتوانید در بقیه ماه کمی پایین\u200cتر از هدف باشید.':'کیفیت تا امروز با هدف برابر است؛ همین کیفیت را حفظ کنید.')+
+        '<br>قابل قبول لازم: '+r2(need*RemT)+' تن (روزانه '+r2(dailyA)+' تن)'+
+        '<br>سقف غیرقابل قبول مجاز: '+r2(RemT*(1-need))+' تن (روزانه '+r2(dailyT-dailyA)+' تن)'+
+        '<br>بررسی: کیفیت پایان ماه = '+r2((A0+need*RemT)/Tt*100)+'٪';
+    }
+    h+='</div>';
+    if(need>0&&need<=1+1e-9){
+      var pts=[];for(var j=5;j<rem;j+=5)pts.push(j);pts.push(rem);
+      h+='<div class="sgi"><b>نقاط کنترل (مقادیر تجمعی)</b><table><thead><tr><th>روز</th><th>تناژ</th><th>قابل قبول</th><th>کیفیت</th></tr></thead><tbody>'+
+        pts.map(function(j){var cT=Ts+j*dailyT,cA=A0+j*dailyT*need;return '<tr><td>'+r2(d+j)+'</td><td>'+r2(cT)+'</td><td>'+r2(cA)+'</td><td>'+r2(cA/cT*100)+'٪</td></tr>'}).join('')+
+        '</tbody></table></div>';
+    }
+  }
+  box.innerHTML=h;
+}
+function addRow(){
+  var r=document.createElement('div');r.className='hr';
+  r.innerHTML='<span class="hn"></span><input type="text" inputmode="decimal" autocomplete="off" placeholder="تناژ"><input type="text" inputmode="decimal" autocomplete="off" placeholder="کیفیت ٪"><input type="text" inputmode="decimal" autocomplete="off" placeholder="روز"><button class="x" aria-label="حذف">×</button>';
+  $('hrows').appendChild(r);renum();
+}
+function renum(){document.querySelectorAll('#hrows .hn').forEach(function(e,i){e.textContent=i+1})}
+function reg(y){
+  var n=y.length,sx=0,sy=0,sxy=0,sxx=0,i;
+  for(i=0;i<n;i++){sx+=i;sy+=y[i];sxy+=i*y[i];sxx+=i*i}
+  var s=(n*sxy-sx*sy)/(n*sxx-sx*sx),b=(sy-s*sx)/n;
+  return{s:s,next:b+s*n};
+}
+function cmp(v,avg,max,unit){
+  return v>max+0.005?'بالاتر از بیشترین مقدار ماه\u200cهای گذشته ('+r2(max)+unit+') \u2014 دستیابی بسیار دشوار':
+    v>avg+0.005?'بالاتر از میانگین گذشته ('+r2(avg)+unit+') ولی در محدوده سابقه \u2014 نیاز به کنترل بیشتر':
+    'کمتر از میانگین گذشته ('+r2(avg)+unit+') \u2014 با روند گذشته قابل دستیابی است';
+}
+function hist(){
+  var box=$('hs'),H=[];
+  document.querySelectorAll('#hrows .hr').forEach(function(r){
+    var ins=r.querySelectorAll('input');
+    if(ins[0].value.trim()===''||ins[1].value.trim()==='')return;
+    var t=num(ins[0].value),q=num(ins[1].value),dd=ins[2].value.trim()===''?30:num(ins[2].value);
+    if(t>0&&q>=0&&q<=100&&dd>0)H.push({t:t,q:q,d:dd});
+  });
+  if(H.length<2){box.innerHTML='<div class="sgi">اطلاعات حداقل ۲ ماه گذشته (تناژ و کیفیت) را وارد کنید.</div>';return}
+  var n=H.length,sT=0,sA=0,sD=0,maxT=0,minQ=101,maxQ=-1,maxDay=0;
+  H.forEach(function(h){sT+=h.t;sA+=h.t*h.q/100;sD+=h.d;maxT=Math.max(maxT,h.t);minQ=Math.min(minQ,h.q);maxQ=Math.max(maxQ,h.q);maxDay=Math.max(maxDay,h.t/h.d)});
+  var avgT=sT/n,avgQ=sA/sT*100,dayH=sT/sD;
+  var out='<div class="sgi"><b>خلاصه '+n+' ماه گذشته</b>میانگین تناژ ماهانه: '+r2(avgT)+' تن (بیشترین: '+r2(maxT)+')<br>میانگین تولید روزانه: '+r2(dayH)+' تن<br>کیفیت (میانگین وزنی): '+r2(avgQ)+'٪ (کمترین '+r2(minQ)+'٪ \u2014 بیشترین '+r2(maxQ)+'٪)</div>';
+  var tf=null,qf=null;
+  if(n>=3){
+    var rt=reg(H.map(function(h){return h.t})),rq=reg(H.map(function(h){return h.q}));
+    tf=Math.max(0,rt.next);qf=Math.min(100,Math.max(0,rq.next));
+    function dir(sl,th,u){return Math.abs(sl)<th?'تقریباً ثابت':(sl>0?'افزایشی (+':'کاهشی (\u2212')+r2(Math.abs(sl))+u+' در ماه)'}
+    out+='<div class="sgi"><b>روند</b>تناژ: '+dir(rt.s,avgT*0.005,' تن')+' \u2192 ماه بعد حدود '+r2(tf)+' تن<br>کیفیت: '+dir(rq.s,0.05,'٪')+' \u2192 ماه بعد حدود '+r2(qf)+'٪</div>';
+  }else{
+    out+='<div class="sgi" style="color:var(--mute)">برای محاسبه روند، اطلاعات حداقل ۳ ماه لازم است.</div>';
+  }
+  out+='<div class="sgi"><b>پیش\u200cبینی ماه جاری بر اساس سابقه</b>تناژ: '+r2(dayH*pmd)+' تن (با میانگین تولید روزانه گذشته)'+(tf!==null?'<br>تناژ با روند: '+r2(tf)+' تن':'')+'<br>کیفیت: '+r2(avgQ)+'٪'+(qf!==null?'<br>کیفیت با روند: '+r2(qf)+'٪':'')+'</div>';
+
+  // targets and current-month status
+  var Tt=num($('PT').value),qt=num($('PQ').value)/100,d=num($('PD').value),Ts=num($('PS').value),qs=num($('PC').value)/100;
+  var okT=$('PT').value.trim()!==''&&Tt>0, okQ=$('PQ').value.trim()!==''&&qt>0&&qt<=1;
+  var okS=$('PD').value.trim()!==''&&$('PS').value.trim()!==''&&$('PC').value.trim()!==''&&d>0&&d<pmd&&Ts>0&&qs>=0&&qs<=1;
+  var tg='';
+  if(okT)tg+='هدف تناژ '+r2(Tt)+' تن: '+(Tt>dayH*pmd*1.0005?(Tt>maxT+0.005?'بالاتر از بیشترین تناژ ماهانه گذشته ('+r2(maxT)+') \u2014 دستیابی بسیار دشوار':'بالاتر از پیش\u200cبینی سابقه ('+r2(dayH*pmd)+') ولی در محدوده سابقه'):'برابر یا کمتر از پیش\u200cبینی سابقه ('+r2(dayH*pmd)+') \u2014 قابل دستیابی')+'<br>';
+  if(okQ)tg+='هدف کیفیت '+r2(qt*100)+'٪: '+cmp(qt*100,avgQ,maxQ,'٪')+'<br>';
+  if(okS){
+    var A0=Ts*qs,rem=pmd-d,RemH=dayH*rem,finT=Ts+RemH,finQ=(A0+avgQ/100*RemH)/finT*100;
+    tg+='با ادامه به سبک ماه\u200cهای گذشته، پایان ماه: حدود '+r2(finT)+' تن با کیفیت '+r2(finQ)+'٪<br>';
+    if(okT&&okQ&&Tt>Ts){
+      var RemT=Tt-Ts,need=(qt*Tt-A0)/RemT,dailyN=RemT/rem;
+      tg+='تناژ روزانه لازم '+r2(dailyN)+' تن: '+cmp(dailyN,dayH,maxDay,' تن')+'<br>';
+      if(need>1+1e-9)tg+='کیفیت لازم در بقیه ماه از ۱۰۰٪ بیشتر می\u200cشود \u2014 هدف شدنی نیست.';
+      else if(need<=0)tg+='هدف کیفیت عملاً تأمین شده است.';
+      else tg+='کیفیت لازم در بقیه ماه '+r2(need*100)+'٪: '+cmp(need*100,avgQ,maxQ,'٪');
+    }
+  }
+  if(tg)out+='<div class="sgi"><b>مقایسه هدف با سابقه</b>'+tg+'</div>';
+  else out+='<div class="sgi" style="color:var(--mute)">برای مقایسه هدف و وضعیت امروز با سابقه، بخش «هدف ماه» و «وضعیت تا امروز» را هم پر کنید.</div>';
+  box.innerHTML=out;
 }
 function calc(){
   var T0=Math.max(0,num($('T0').value));
@@ -177,6 +327,16 @@ document.querySelectorAll('.sc .seg button').forEach(function(b){
     calc();
   });
 });
+document.querySelectorAll('#tabs button').forEach(function(b){b.addEventListener('click',function(){
+  document.querySelectorAll('#tabs button').forEach(function(x){x.classList.toggle('on',x===b)});
+  $('t1').hidden=b.dataset.t!=='t1';$('t2').hidden=b.dataset.t!=='t2';
+})});
+['PT','PQ','PD','PS','PC'].forEach(function(id){$(id).addEventListener('input',function(){plan();hist()})});
+document.querySelectorAll('#pseg button').forEach(function(b){b.addEventListener('click',function(){pmd=+b.dataset.m;document.querySelectorAll('#pseg button').forEach(function(x){x.classList.toggle('on',x===b)});plan();hist()})});
+$('hrows').addEventListener('input',hist);
+$('hrows').addEventListener('click',function(e){var x=e.target.closest('.x');if(!x)return;x.closest('.hr').remove();renum();hist()});
+$('hadd').addEventListener('click',function(){addRow()});
+plan();addRow();addRow();addRow();hist();
 calc();
 })();
 </script>
